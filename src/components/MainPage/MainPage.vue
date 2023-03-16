@@ -42,13 +42,13 @@ export default {
   name : 'MainPage',
   components : {LoadingPage},
   created () {
-this.requestPosts(this.routeToPages)
+this.getRequestPosts([this.routeToPages])
   },
   computed:{
     ...mapGetters(['routeToPages', 'showPages', 'loadingData'])
   },
   methods:{
-    ...mapActions(['requestPosts'])
+    ...mapActions(['getRequestPosts'])
   }
 }
 </script>
@@ -72,6 +72,9 @@ margin: -1px;
 }
 .red-card {
   @include card-color(#741a03de, #ce1d1d, rgb(255, 253, 253))
+}
+.black-card {
+  @include card-color(#242323de, #3a3232, rgb(255, 253, 253))
 }
 .card {
   max-width: $maxWidth;

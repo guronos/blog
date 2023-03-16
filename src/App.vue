@@ -71,7 +71,8 @@
     
               <v-tab to="blog">Мои посты</v-tab>
     
-              <v-tab>Что-то еще</v-tab>
+              <v-tab to="registration">Регистрация</v-tab>
+              <v-tab to="authorization">Вход</v-tab>
             </v-tabs>
           </template>
         </v-app-bar>
@@ -147,7 +148,29 @@ export default {
       ],
     }
   },
-};
+  mounted () {
+    this.getTokenGuest()
+  },
+  methods : {
+    async getTokenGuest() {
+      if (!localStorage.getItem('token')){
+      console.log(localStorage.getItem('token'))
+    }
+      const getToken = await fetch('http://chub96u7.beget.tech/wp-json/jwt-auth/v1/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify({
+        'username': 'guest',
+        'password' : '(&k48USThweOvW%aMGGbyQ8#'
+      })
+    })
+      const showToken = await getToken.json()
+      console.log('getTokenGuest '+showToken.token)
+      localStorage.setItem('token', showToken.token)
+      
+}}};
 </script>
 <style>
 
