@@ -5,7 +5,7 @@
       <v-carousel-item
         v-for="(item,i) in showPages"
         :key="i"
-        :src="item.img[0]"
+        :src="item.img"
         class="cyan lighten-4"
       >
           <v-row
@@ -42,13 +42,13 @@ export default {
   name : 'MainPage',
   components : {LoadingPage},
   created () {
-this.getRequestPosts([this.routeToPages])
+this.getPostsForMainPage()
   },
   computed:{
-    ...mapGetters(['routeToPages', 'showPages', 'loadingData'])
+    ...mapGetters(['showPages', 'loadingData'])
   },
   methods:{
-    ...mapActions(['getRequestPosts'])
+    ...mapActions(['getPostsForMainPage'])
   }
 }
 </script>

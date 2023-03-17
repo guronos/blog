@@ -27,6 +27,8 @@
         :content="post.content"
         :img="post.img"
         :date="post.date"
+        :time="post.time"
+        :comments="post.comments"
         
         />
     </div>
@@ -58,29 +60,29 @@ data () {
     quantityShowPost : [1, 2, 5, 10],
     currentPage : 1,
     currentQuantyPost : 2,
-    text : "Постов на странице"
+    // text : "Постов на странице"
   }
 }, 
 created() {
   // console.log(`created ${this.currentQuantyPost}, ${this.currentPage}`)
-  this.getRequestPosts([this.routeToPosts, this.currentQuantyPost, this.currentPage])
+  this.getRequestPosts([this.currentQuantyPost, this.currentPage])
 }, methods : {
   ...mapActions(['getRequestPosts']),
   handleChangeCurrentPage($event) {
     if (this.currentPage !== $event) {
     this.currentPage = $event
     console.log(`handleChangeCurrentPage ${this.currentQuantyPost}, ${this.currentPage}`)
-    this.getRequestPosts([this.routeToPosts, this.currentQuantyPost, this.currentPage])
+    this.getRequestPosts([this.currentQuantyPost, this.currentPage])
     }
 },
 handleShowQuantityPosts (event) {
   this.currentQuantyPost = event
   console.log(`handleShowQuantityPosts ${this.currentQuantyPost}, ${this.currentPage}`)
-  this.getRequestPosts([this.routeToPosts, this.currentQuantyPost, 1])
+  this.getRequestPosts([this.currentQuantyPost, 1])
 },
 },
 computed : {
-  ...mapGetters(['showPosts', 'routeToPosts', 'loadingData', 'showQuantityPostsOnServer']),
+  ...mapGetters(['showPosts', 'loadingData', 'showQuantityPostsOnServer']),
   quantyPages(){
     console.log('Match '+Math.ceil(this.showQuantityPostsOnServer / this.currentQuantyPost))
     return Math.ceil(this.showQuantityPostsOnServer / this.currentQuantyPost)
@@ -94,7 +96,8 @@ computed : {
   max-width: 1200px;
 }
 .container-blog {
-height: 100vh;
+/* height: 100vh; */
+margin-bottom: -20px;
 }
 .post {
   margin: 10px 10px;

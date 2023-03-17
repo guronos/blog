@@ -26,7 +26,6 @@
     
           <v-spacer></v-spacer>
     
-    
           <v-btn icon>
             <v-icon>mdi-heart</v-icon>
           </v-btn>
@@ -64,7 +63,6 @@
               </v-list-item>
             </v-list>
           </v-menu>
-    
           <template v-slot:extension>
             <v-tabs align-with-title>
               <v-tab to="/">Обо мне</v-tab>
@@ -103,7 +101,7 @@
             </v-list-item-avatar>
     
             <v-list-item-content>
-              <v-list-item-title>Vadim</v-list-item-title>
+              <v-list-item-title>{{ showUserlogin }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
     
@@ -138,6 +136,7 @@
   </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex';
 export default {
   name: 'App',
   data () {
@@ -148,29 +147,51 @@ export default {
       ],
     }
   },
-  mounted () {
-    this.getTokenGuest()
-  },
-  methods : {
-    async getTokenGuest() {
-      if (!localStorage.getItem('token')){
-      console.log(localStorage.getItem('token'))
-    }
-      const getToken = await fetch('http://chub96u7.beget.tech/wp-json/jwt-auth/v1/token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-      },
-      body: JSON.stringify({
-        'username': 'guest',
-        'password' : '(&k48USThweOvW%aMGGbyQ8#'
-      })
-    })
-      const showToken = await getToken.json()
-      console.log('getTokenGuest '+showToken.token)
-      localStorage.setItem('token', showToken.token)
-      
-}}};
+  // async created () {
+  //   this.getValidationToken()
+  // },
+  // methods : {
+  //   ...mapMutations(['getUserlogin']),
+//     async getValidationToken() {
+//       if (!localStorage.getItem('token')){
+//         await this.getTokenGuest ()
+//       console.log('tokena nebulo' + localStorage.getItem('token'))
+//     } else {
+//       const validationToken = await fetch('http://chub96u7.beget.tech/wp-json/jwt-auth/v1/token/validate', {
+//       method: 'POST',
+//       headers: {
+//         'Authorization': `Bearer ${localStorage.getItem('token')}`,
+//       }
+//     })
+//     if (validationToken.statusText === 'OK'){
+//       return
+//     } else {
+//       await this.getTokenGuest ()
+//     }
+//     }
+// },
+//  async getTokenGuest () {
+//   const getToken = await fetch('http://chub96u7.beget.tech/wp-json/jwt-auth/v1/token', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json;charset=utf-8'
+//       },
+//       body: JSON.stringify({
+//         'username': 'guest',
+//         'password' : '(&k48USThweOvW%aMGGbyQ8#'
+//       })
+//     })
+//       const showToken = await getToken.json()
+//       await localStorage.setItem('token', showToken.token)
+//       console.log('getTokenGuest '+localStorage.getItem('token'))
+
+//       this.getUserlogin('guest')
+//  }
+//  },
+ computed: {
+  ...mapGetters(['showUserlogin'])
+ }
+ };
 </script>
 <style>
 
