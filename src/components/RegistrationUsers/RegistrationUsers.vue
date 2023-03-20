@@ -1,5 +1,7 @@
 <template>
   <div>
+    <LoadingPage v-if="loadingData" />
+    <v-container v-if="!authorization">
     <v-container class="green my-16">Регистрация</v-container> 
     <v-container>Для предоставления более расширенного функционала блога (комментирование записей), Вам необходимо зарегистрироватся</v-container>
     <v-container><v-form
@@ -57,17 +59,23 @@
   
 
     </v-form></v-container>
-
+  </v-container>
+  <v-container v-else><h3>Вы авторизованы</h3></v-container>
   </div>
 </template>
 
 <script>
+import LoadingPage from '../LoadingPage';
+import { mapMutations } from 'vuex';
 export default {
 name : 'RegistrationUsers',
+components: {LoadingPage},
 data: () => ({
     valid: true,
     name: '',
+    loadingData: true,
     showPassword : false,
+    authorization : false,
     nameRules: [
       v => !!v || 'Укажите логин',
       v => (v && v.length <= 10) || 'Длина логина не должна превышать 10 символов',
@@ -85,32 +93,56 @@ data: () => ({
     select: null,
     checkbox: false,
   }),
-
+  created (){
+    this.checkAuthorization()
+   },
   methods: {
-    async submit () {
-      if(this.$refs.form.validate()) {
-        console.log(JSON.stringify({
-        username : this.name,
-        email : this.email,
-        locale : 'en_US',
-        password : this.password
-      }))
-const rezult = await fetch('http://chub96u7.beget.tech/wp-json/wp/v2/users', {
+    ...mapMutations(['getUserlogin']),
+    async checkAuthorization() {
+      if (!localStorage.getItem('token')){
+        this.loadingData = false
+        return
+      } else if (localStorage.getItem('token')){
+      const validationToken = await fetch('http://chub96u7.beget.tech/wp-json/jwt-auth/v1/token/validate', {
       method: 'POST',
       headers: {
-        'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vY2h1Yjk2dTcuYmVnZXQudGVjaCIsImlhdCI6MTY3ODk2MjY0MSwibmJmIjoxNjc4OTYyNjQxLCJleHAiOjE2Nzk1Njc0NDEsImRhdGEiOnsidXNlciI6eyJpZCI6IjEifX19.1bOwlGuSSYCO0FDfF6ZBGXvnq7VraEwTpr6QzNsfDro',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      }
+    })
+    if (validationToken.statusText === 'OK'){
+      this.authorization = true
+      this.loadingData = false
+    }
+  }
+    },
+    async submit () {
+      if(this.$refs.form.validate()) {
+      //   console.log(JSON.stringify({
+      //   username : this.name,
+      //   email : this.email,
+      //   locale : 'en_US',
+      //   password : this.password
+      // }))
+      const getTokenRegistration = await fetch('http://chub96u7.beget.tech/api/get_nonce/?controller=user&method=register')
+      const tokenRegistration = await getTokenRegistration.json()
+      console.log(tokenRegistration.nonce)
+const rezult = await fetch(`http://chub96u7.beget.tech/api/user/register/?username=${this.name}&email=${this.email}&nonce=${tokenRegistration.nonce}&display_name=${this.name}&user_pass=${this.password}&insecure=cool`, {
+      method: 'POST',
+      headers: {
         'Content-Type': 'application/json;charset=utf-8'
       },
-      body: JSON.stringify({
-        username : this.name,
-        email : this.email,
-        locale : 'en_US',
-        password : this.password
-      })
+      // body: JSON.stringify({
+      //   username : this.name,
+      //   email : this.email,
+      //   user_pass : this.password,
+      //   display_name : this.name,
+      //   insecure : 'cool',
+      //   nonce : tokenRegistration.nonce
+      // })
     })
-    console.log(rezult)
+    console.log(rezult.ok)
       if (rezult.ok){
-        saveTokenLocalstore()
+        this.saveTokenLocalstore()
       }} 
     },
     reset () {
@@ -129,7 +161,8 @@ const rezult = await fetch('http://chub96u7.beget.tech/wp-json/wp/v2/users', {
     })
     const userToken = await getUserToken.json()
     localStorage.setItem('token', userToken.token)
-    console.log(userToken.token)
+    this.getUserlogin(this.name)
+    this.authorization = true
     }
   },
 }

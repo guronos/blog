@@ -8,6 +8,7 @@
      <v-divider />
 <CommentsPosts 
 :comments="comments"
+:IDPost="IDPost"
 />
      <v-divider />
      <div>{{ date }}</div> 
@@ -27,7 +28,8 @@ export default {
             img : String,
             date : String,
             time : String,
-            comments : Array
+            comments : Number,
+            IDPost : Number
         }
     }
 </script>

@@ -1,5 +1,7 @@
 <template>
  <div>
+  <LoadingPage v-if="loadingData" />
+  <v-container v-if="notAuthorization">
     <v-container class="green my-16">Вход</v-container> 
     <v-container>Для предоставления более расширенного функционала блога (комментирование записей), Вам необходимо войти</v-container>
     <v-container><v-form
@@ -44,15 +46,21 @@
   
 
     </v-form></v-container>
-
+  </v-container>
+  <v-container v-else><h3>Вы авторизованы</h3></v-container>
   </div>
 </template>
 
 <script>
+import LoadingPage from '../LoadingPage'
+import { mapMutations } from 'vuex'
 export default {
 name : 'SiteAuthorization',
+components : {LoadingPage},
 data: () => ({
     valid: true,
+    notAuthorization : true,
+    loadingData : true,
     name: '',
     showPassword : false,
     nameRules: [
@@ -64,9 +72,30 @@ data: () => ({
       v => !!v || 'Укажите пароль',
       v => (v  && v.length >= 5) || 'Пароль не может быть менее 5 символов',
     ],
-  }),
+  }), 
+  created (){
+    this.checkAuthorization()
+   },
 
   methods: {
+    ...mapMutations(['getUserlogin']),
+    async checkAuthorization() {
+      if (!localStorage.getItem('token')){
+        this.loadingData = false
+        return
+      } else if (localStorage.getItem('token')){
+      const validationToken = await fetch('http://chub96u7.beget.tech/wp-json/jwt-auth/v1/token/validate', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      }
+    })
+    if (validationToken.statusText === 'OK'){
+      this.notAuthorization = false
+      this.loadingData = false
+    }
+  }
+    },
     async submit () {
       if(this.$refs.form.validate()) {
       const getUserToken = await fetch('http://chub96u7.beget.tech/wp-json/jwt-auth/v1/token', {
@@ -81,6 +110,8 @@ data: () => ({
     })
     const userToken = await getUserToken.json()
     localStorage.setItem('token', userToken.token)
+    this.getUserlogin(this.name)
+    this.notAuthorization = false
     this.reset ()
     console.log(userToken.token)
       }},

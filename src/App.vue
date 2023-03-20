@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <v-app height="90vh">
+    <v-app>
       <v-card>
         <v-app-bar
         
@@ -22,55 +22,21 @@
     
           <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
     
-          <v-toolbar-title>Мой блог</v-toolbar-title>
+          <v-toolbar-title>{{showUserlogin}}, добро пожаловать в Мой блог</v-toolbar-title>
     
           <v-spacer></v-spacer>
     
-          <v-btn icon>
-            <v-icon>mdi-heart</v-icon>
+          <v-btn @click="logOut()" v-if="showUserlogin!=='Гость'">
+            Выйти
           </v-btn>
-    
-          <v-menu
-            bottom
-            left
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                icon
-                color="yellow"
-                v-bind="attrs"
-                v-on="on"
-              >
-                <v-icon>mdi-dots-vertical</v-icon>
-              </v-btn>
-            </template>
-    
-            <v-list>
-              <v-list-item>
-                <v-list-item-title>Click Me 1</v-list-item-title>
-              </v-list-item>
-    
-              <v-list-item>
-                <v-list-item-title>Click Me 2</v-list-item-title>
-              </v-list-item>
-    
-              <v-list-item>
-                <v-list-item-title>Click Me 3</v-list-item-title>
-              </v-list-item>
-    
-              <v-list-item>
-                <v-list-item-title>Click Me 4</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
           <template v-slot:extension>
             <v-tabs align-with-title>
               <v-tab to="/">Обо мне</v-tab>
     
               <v-tab to="blog">Мои посты</v-tab>
     
-              <v-tab to="registration">Регистрация</v-tab>
-              <v-tab to="authorization">Вход</v-tab>
+              <v-tab to="registration" v-if="showUserlogin==='Гость'">Регистрация</v-tab>
+              <v-tab to="authorization" v-if="showUserlogin==='Гость'">Вход</v-tab>
             </v-tabs>
           </template>
         </v-app-bar>
@@ -97,7 +63,7 @@
         >
           <v-list-item @click.stop="drawer = !drawer">
             <v-list-item-avatar>
-              <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
+              <v-img src="./assets/img/avtr.jpg"></v-img>
             </v-list-item-avatar>
     
             <v-list-item-content>
@@ -112,6 +78,7 @@
               v-for="item in items"
               :key="item.title"
               link
+              to="/feedback"
             >
               <v-list-item-icon>
                 <v-icon>{{ item.icon }}</v-icon>
@@ -136,7 +103,7 @@
   </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex';
+import { mapGetters, mapMutations, mapActions } from 'vuex';
 export default {
   name: 'App',
   data () {
@@ -146,50 +113,24 @@ export default {
         { title: 'Обратная связь', icon: 'mdi-forum' },
       ],
     }
+  },created () {
+    this.checkAuthorization()
   },
-  // async created () {
-  //   this.getValidationToken()
-  // },
-  // methods : {
-  //   ...mapMutations(['getUserlogin']),
-//     async getValidationToken() {
-//       if (!localStorage.getItem('token')){
-//         await this.getTokenGuest ()
-//       console.log('tokena nebulo' + localStorage.getItem('token'))
-//     } else {
-//       const validationToken = await fetch('http://chub96u7.beget.tech/wp-json/jwt-auth/v1/token/validate', {
-//       method: 'POST',
-//       headers: {
-//         'Authorization': `Bearer ${localStorage.getItem('token')}`,
-//       }
-//     })
-//     if (validationToken.statusText === 'OK'){
-//       return
-//     } else {
-//       await this.getTokenGuest ()
-//     }
-//     }
-// },
-//  async getTokenGuest () {
-//   const getToken = await fetch('http://chub96u7.beget.tech/wp-json/jwt-auth/v1/token', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json;charset=utf-8'
-//       },
-//       body: JSON.stringify({
-//         'username': 'guest',
-//         'password' : '(&k48USThweOvW%aMGGbyQ8#'
-//       })
-//     })
-//       const showToken = await getToken.json()
-//       await localStorage.setItem('token', showToken.token)
-//       console.log('getTokenGuest '+localStorage.getItem('token'))
-
-//       this.getUserlogin('guest')
-//  }
-//  },
  computed: {
-  ...mapGetters(['showUserlogin'])
+  ...mapGetters(['showUserlogin']),
+  // getLogin() {
+  //   if (localStorage.getItem('login')){
+  //     return localStorage.getItem('login')
+  //   }
+  //   return 'Гость'
+  //   }
+ }, methods: {
+  ...mapMutations(['getUserlogin']),
+  ...mapActions(['checkAuthorization']),
+  logOut() {
+    localStorage.clear()
+    this.getUserlogin('Гость')
+  },
  }
  };
 </script>

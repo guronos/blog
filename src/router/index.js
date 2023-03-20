@@ -4,6 +4,7 @@ import MainPage from '@/components/MainPage';
 import BlogPage from '@/components/BlogPage';
 import RegistrationUsers from '@/components/RegistrationUsers/'
 import SiteAuthorization from '@/components/SiteAuthorization'
+import FeedBack from '@/components/FeedBack';
 
 
 Vue.use(VueRouter)
@@ -28,6 +29,11 @@ component: BlogPage
     path: '/authorization',
   name: 'authorization',
   component: SiteAuthorization
+},
+{
+  path: '/feedback',
+  name: 'feedback',
+  component: FeedBack
 }
 ]
 

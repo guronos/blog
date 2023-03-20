@@ -29,7 +29,7 @@
         :date="post.date"
         :time="post.time"
         :comments="post.comments"
-        
+        :IDPost="post.id"
         />
     </div>
     <div>
