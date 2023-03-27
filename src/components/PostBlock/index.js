@@ -1,1 +1,1 @@
-export {default} from './PostBlock.vue'
+export { default } from "./PostBlock.vue";

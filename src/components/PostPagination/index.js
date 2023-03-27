@@ -1,1 +1,1 @@
-export {default} from './PostPagination.vue'
+export { default } from "./PostPagination.vue";

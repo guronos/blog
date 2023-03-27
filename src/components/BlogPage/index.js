@@ -1,1 +1,1 @@
-export {default} from './BlogPage.vue'
+export { default } from "./BlogPage.vue";

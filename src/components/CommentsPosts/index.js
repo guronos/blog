@@ -1,1 +1,1 @@
-export {default} from './CommentsPosts.vue'
+export { default } from "./CommentsPosts.vue";

@@ -1,1 +1,1 @@
-export {default} from './FeedBack.vue'
+export { default } from "./FeedBack.vue";

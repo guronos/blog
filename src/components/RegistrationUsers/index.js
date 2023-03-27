@@ -1,1 +1,1 @@
-export {default} from './RegistrationUsers.vue'
+export { default } from "./RegistrationUsers.vue";

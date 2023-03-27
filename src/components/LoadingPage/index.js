@@ -1,1 +1,1 @@
-export {default} from './LoadingPage.vue'
+export { default } from "./LoadingPage.vue";
