@@ -40,13 +40,16 @@
             counter
             @click:append="showPassword = !showPassword"
           ></v-text-field>
-
+          <router-link to="/privacypolicy"
+            >Политика конфиденциальности</router-link
+          >
           <v-checkbox
             v-model="checkbox"
             :rules="[(v) => !!v || 'You must agree to continue!']"
-            label="Я согласен"
+            label="Я согласен c Политикой конфиденциальности"
             required
-          ></v-checkbox>
+            >G</v-checkbox
+          >
           <v-btn color="error" class="mr-4" @click="reset">
             Очистить форму
           </v-btn>

@@ -5,6 +5,7 @@ import BlogPage from "@/components/BlogPage";
 import RegistrationUsers from "@/components/RegistrationUsers/";
 import SiteAuthorization from "@/components/SiteAuthorization";
 import FeedBack from "@/components/FeedBack";
+import PrivacyPolicy from "@/views/PrivacyPolicy";
 
 Vue.use(VueRouter);
 
@@ -33,6 +34,11 @@ const routes = [
     path: "/feedback",
     name: "feedback",
     component: FeedBack,
+  },
+  {
+    path: "/privacypolicy",
+    name: "privacy-policy",
+    component: PrivacyPolicy,
   },
 ];
 
