@@ -1,5 +1,5 @@
 <template>
-<v-container class="loading">
+<v-container class="loading d-flex justify-center align-center">
       <v-progress-circular
         :size="120"
         :width="15"
@@ -17,9 +17,7 @@ export default {
 .loading {
 width: 100vw;
 height: 100vh;
-background: #ffffff;
-display: flex;
-justify-content: center;
-align-items: center;
+background-image: url('../../assets/img/background.jpg');
+background-size: cover;
 }
 </style>

@@ -10,27 +10,45 @@
     </div>
     <div v-if="showComments">
     <div v-for="(comment, ind) in arrayComments" :key="ind">
-        <div class="comment my-4">
-            <v-img :src="comment.avatar" width="24"></v-img>
-        <h5>{{ comment.author_name }}</h5>
-        <div>
+        <v-card color="#B0C4DE" v-if="comment.parent===0" class="comment my-4 pb-2">
+            <div class="commentator mx-2">
+              <div><v-img :src="comment.avatar" width="24px"></v-img></div>
+        <h5 class="ml-3">{{ comment.author_name }}</h5>
+      </div>
+      <v-divider class="ma-2" />
+        <div class="mx-2">
             {{ comment.content }}
         </div>
-        <v-divider />
+        <v-divider class="ma-2" />
         <div>
+          <div class="d-flex mx-2">
             <div>{{ comment.date }}</div>
-            <div>{{ comment.time }}</div>
+            <div class="mx-2">{{ comment.time }}</div>
+          </div>
+            <v-btn color="#5c8eebe7" class="ma-2 white--text" @click="getStatusAuthorization(true, ind)">Ответить</v-btn>
+            <div v-for="(comm, indx) in arrayComments" :key="indx"><div v-if="comm.parent===comment.id"> 
+            <v-card color="#F0F8FF" class="my-2 ml-10" max-width="90%">
+              <div class="commentator mx-2">
+              <div><v-img :src="comm.avatar" width="24px"></v-img></div>
+        <h5 class="ml-3">{{ comm.author_name }}</h5>
+      </div>
+      <v-divider class="ma-2" />
+        <div class="mx-2">
+            {{ comm.content }}
         </div>
-        </div>
-    </div>  
-    </div>
-    <v-btn @click="getStatusAuthorization()" v-if="!addComment">Комментировать</v-btn>
-    <div v-if="addComment">
+        <v-divider class="ma-2" />
+          <div class="d-flex mx-2">
+            <div>{{ comm.date }}</div>
+            <div class="mx-2">{{ comm.time }}</div>
+          </div>
+            </v-card>
+            </div></div>
+            <div v-if="ind===childCommentID">
         <v-form>
       <v-container>
         <v-row>
           <v-col cols="12">
-            <div class="comment">
+            <v-card color="#F0F8FF" class="comment-answer pa-1">
             <v-text-field
               v-model="message"
               outlined
@@ -51,15 +69,64 @@
                 </v-fade-transition>
               </template>
             </v-text-field>
-            <router-link to="/authorization"><v-alert type="error" v-if="notAuthorization">
-        Для отправки комментария Вам необходимо авторизоваться!
-      </v-alert></router-link>
+          
       <v-alert type="error" v-if="errorText">
         {{errorText}}
       </v-alert>
-            <v-btn @click="handlePutComment(IDPost)"><i class="far fa-paper-plane"></i>Отправить</v-btn>
-            <v-btn @click="addComment=!addComment">Отменить</v-btn>
-            </div>
+            <v-btn color="#5c8eebe7" class="mx-3 white--text" @click="handlePutComment(IDPost, comment.id)"><i class="far fa-paper-plane mr-2"></i>Отправить</v-btn>
+            <v-btn color="#5c8eebe7" class="white--text" @click="childCommentID=''">Отменить</v-btn>
+              <div class="d-flex justify-center ma-2">
+            <router-link to="/authorization" class="text-decoration-none"><v-alert class="alert-message" type="error" v-if="notAuthorization">
+        Для отправки комментария Вам необходимо авторизоваться!
+      </v-alert></router-link></div>
+    </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-form>
+    </div>
+        </div>
+        </v-card>
+    </div>  
+    </div>
+    <v-btn color="#B0C4DE" @click="getStatusAuthorization()" v-if="!addComment">Комментировать</v-btn>
+    <div v-if="addComment">
+        <v-form>
+      <v-container>
+        <v-row>
+          <v-col cols="12">
+            <v-card color="#F0F8FF" class="comment-answer pa-1">
+            <v-text-field
+              v-model="message"
+              outlined
+              clearable
+              label="Комментарий"
+              type="text"
+            >
+              <template v-slot:append>
+                <v-fade-transition leave-absolute>
+                  <v-progress-circular
+                  class="mx-4"
+                    v-if="loading"
+                    @click="clickMe"
+                    size="24"
+                    color="info"
+                    indeterminate
+                  ></v-progress-circular>
+                </v-fade-transition>
+              </template>
+            </v-text-field>
+
+      <v-alert type="error" v-if="errorText">
+        {{errorText}}
+      </v-alert>
+            <v-btn color="#5c8eebe7" class="mx-3 white--text" @click="handlePutComment(IDPost)"><i class="far fa-paper-plane mr-2"></i>Отправить</v-btn>
+            <v-btn color="#5c8eebe7" class="white--text" @click="addComment=!addComment">Отменить</v-btn>            
+            <div class="d-flex justify-center ma-2">
+            <router-link to="/authorization" class="text-decoration-none"><v-alert type="error" v-if="notAuthorization">
+        Для отправки комментария Вам необходимо авторизоваться!
+      </v-alert></router-link></div>
+            </v-card>
           </v-col>
         </v-row>
       </v-container>
@@ -78,6 +145,7 @@ props : {
 data () {
     return {
       arrayComments : [],
+      addChildComment:false,
         showComments:false,
         addComment : false,
         message: '',
@@ -85,7 +153,8 @@ data () {
         newComment : {},
         showNewComment : false,
         notAuthorization : false,
-        errorText : ''
+        errorText : '',
+        childCommentID : ''
     }
 }, methods: {
     clickMe () {
@@ -93,11 +162,16 @@ data () {
       setTimeout(() => {
         this.loading = false
       }, 2000)
-}, getStatusAuthorization () {
+}, getStatusAuthorization (childComment=false, id='') {
   if (!localStorage.getItem('token')){
         this.notAuthorization = true
 }
-this.addComment=!this.addComment
+if (childComment) {
+  this.addChildComment=!this.addChildComment
+  this.childCommentID = id
+} else { 
+  this.addComment=!this.addComment
+}
 },
 getCountComment(countCommentProps, lengthArrayComments){
   if (lengthArrayComments===0 && countCommentProps>=10) {
@@ -159,7 +233,6 @@ this.newComment = {
   'parent' : responseCreateComment.parent,
   'post' : responseCreateComment.post
     }
-    console.log(responseCreateComment)
     this.errorText = ''
     this.getComments(postId)
     this.showComments =true
@@ -171,11 +244,9 @@ this.newComment = {
     }
 }
 }, async getComments(postID){
-  // this.showComments=!this.showComments
   this.showComments=true
   this.arrayComments = []
   try{
-// const arrayComments = [];
 const getCommentsData = await fetch(`http://chub96u7.beget.tech/wp-json/wp/v2/comments?post=${postID}&per_page=40`)
 const commentData = await getCommentsData.json()
 
@@ -188,35 +259,25 @@ commentData.reverse().forEach(i=>this.arrayComments.push({
   'time' : i.date.match(/(\S+)\T(\S+)/)[2], //дата приходит в формате "2023-03-13T17:49:31", разбиваем строку на дату и время
   'avatar' : i.author_avatar_urls['24']
 }));
-// console.log('arrcom', arrayComments)
-console.log(this.arrayComments)
-
-  // return arrayComments
 } catch (e){
   return
 }
   }
 }}
-
-/* 
-await fetch('http://chub96u7.beget.tech/wp-json/wp/v2/users', {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vY2h1Yjk2dTcuYmVnZXQudGVjaCIsImlhdCI6MTY3ODk2MjY0MSwibmJmIjoxNjc4OTYyNjQxLCJleHAiOjE2Nzk1Njc0NDEsImRhdGEiOnsidXNlciI6eyJpZCI6IjEifX19.1bOwlGuSSYCO0FDfF6ZBGXvnq7VraEwTpr6QzNsfDro',
-        'Content-Type': 'application/json;charset=utf-8'
-      },
-      body: JSON.stringify({
-        author : this.id,
-        author_name : this.name,
-        content : 'text',
-        post : this.postID
-      })
-    })
-*/
 </script>
 
-<style>
+<style scoped>
 .comment {
-    border: 2px solid #d42929;
+  color:#363A45;
+  background: #FDF6EE;
+}
+.commentator {
+  display: flex;
+  height: 30px;
+  align-items: center;
+}
+.comment-answer {
+  color:#363A45;
+  background: #f8efe4f8;
 }
 </style>

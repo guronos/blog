@@ -3,12 +3,9 @@
     <v-app>
       <v-card>
         <v-app-bar
-        
           absolute
           color="#6A76AB"
           dark
-  
-  
           src="https://picsum.photos/1920/1080?random"
           fade-img-on-scroll
           scroll-target="#scrolling-techniques-4"
@@ -24,18 +21,17 @@
     
           <v-toolbar-title>{{showUserlogin}}, добро пожаловать в Мой блог</v-toolbar-title>
     
-          <v-spacer></v-spacer>
-    
-          <v-btn @click="logOut()" v-if="showUserlogin!=='Гость'">
+          <v-spacer></v-spacer><div>
+          <a href="https://github.com/guronos/" target="_blank" class="mx-2"><i class="fa-brands fa-github fa-fade fa-2xl" style="color: #fcfcfc;"></i></a>
+          <a href="https://t.me/ichschlafe" target="_blank" class="mx-2"><i class="fa-regular fa-paper-plane fa-beat-fade fa-xl" style="color: #fcfcfc;"></i></a>
+          <v-btn class="mx-2" @click="logOut()" v-if="showUserlogin!=='Гость'">
             Выйти
           </v-btn>
+        </div>
           <template v-slot:extension>
             <v-tabs align-with-title>
               <v-tab to="/">Обо мне</v-tab>
-    
               <v-tab to="blog">Мои посты</v-tab>
-    
-              <v-tab to="registration" v-if="showUserlogin==='Гость'">Регистрация</v-tab>
               <v-tab to="authorization" v-if="showUserlogin==='Гость'">Вход</v-tab>
             </v-tabs>
           </template>
@@ -114,26 +110,23 @@ export default {
       ],
     }
   },created () {
-    this.checkAuthorization()
+    this.getUserName()
   },
  computed: {
   ...mapGetters(['showUserlogin']),
-  // getLogin() {
-  //   if (localStorage.getItem('login')){
-  //     return localStorage.getItem('login')
-  //   }
-  //   return 'Гость'
-  //   }
  }, methods: {
-  ...mapMutations(['getUserlogin']),
-  ...mapActions(['checkAuthorization']),
+  ...mapMutations(['addUserlogin']),
+  ...mapActions(['getUserName']),
   logOut() {
     localStorage.clear()
-    this.getUserlogin('Гость')
+    this.addUserlogin('Гость')
   },
  }
  };
 </script>
 <style>
-
+#app {
+  background-image: url('./assets/img/background.jpg');
+  background-size: cover;
+}
 </style>

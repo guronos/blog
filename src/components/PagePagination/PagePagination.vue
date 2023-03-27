@@ -1,7 +1,7 @@
 <template>
     <div class="text-center">
       <v-pagination
-        color="light-blue accent-4"
+        color="#5c8eebe7"
         :value="currentPage"
         :length="quantyPages" 
         prev-icon="mdi-menu-left"
@@ -16,7 +16,6 @@
 export default {
     name : 'ItemsPaginations',
     props : {
-    // quantityShowPost : Array,
     currentPage : Number,
     quantyPages : Number
     },
@@ -28,7 +27,3 @@ export default {
   },
 }
 </script>
-
-<style>
-
-</style>

@@ -1,11 +1,11 @@
 <template>
-  <v-container class="container-blog">
+  <v-container>
 <LoadingPage v-if="loadingData" />
-    <v-container class="wrap d-flex justify-center cyan lighten-5 container-blog">
-      <div class="pa-4">
+    <v-container class="wrap d-flex justify-center">
+      <div class="pa-4 d-none d-md-flex d-lg-flex d-xl-flex">
         <v-img max-height="200" max-width="200" src="https://cdn-irec.r-99.com/sites/default/files/imagecache/250i/pictures/picture-575475-9b2fd.jpg"></v-img>
       </div>
-    <div class="d-flex flex-column align-start">
+    <div class="d-flex flex-column align-center justify-center">
       <div>
         <PagePagination 
         class="paginationBlock"
@@ -21,9 +21,10 @@
         />
       </div>
       
-      <div class="post secondary rounded-lg pa-4 elevation-10 " v-for="post in showPosts" :key="post.id">
+      <div class="post rounded-lg pa-4 elevation-10 " v-for="post in showPosts" :key="post.id">
         <PostBlock 
         :title="post.title"
+        :excerpt="post.excerpt"
         :content="post.content"
         :img="post.img"
         :date="post.date"
@@ -38,7 +39,6 @@
     :currentPage="currentPage"
     :quantyPages='quantyPages'
     @handleChangeCurrentPage='handleChangeCurrentPage'
-    
         />
       </div>
   </div>
@@ -60,31 +60,26 @@ data () {
     quantityShowPost : [1, 2, 5, 10],
     currentPage : 1,
     currentQuantyPost : 2,
-    // text : "Постов на странице"
   }
 }, 
 created() {
-  // console.log(`created ${this.currentQuantyPost}, ${this.currentPage}`)
   this.getRequestPosts([this.currentQuantyPost, this.currentPage])
 }, methods : {
   ...mapActions(['getRequestPosts']),
   handleChangeCurrentPage($event) {
     if (this.currentPage !== $event) {
     this.currentPage = $event
-    console.log(`handleChangeCurrentPage ${this.currentQuantyPost}, ${this.currentPage}`)
     this.getRequestPosts([this.currentQuantyPost, this.currentPage])
     }
 },
 handleShowQuantityPosts (event) {
   this.currentQuantyPost = event
-  console.log(`handleShowQuantityPosts ${this.currentQuantyPost}, ${this.currentPage}`)
   this.getRequestPosts([this.currentQuantyPost, 1])
 },
 },
 computed : {
   ...mapGetters(['showPosts', 'loadingData', 'showQuantityPostsOnServer']),
   quantyPages(){
-    console.log('Match '+Math.ceil(this.showQuantityPostsOnServer / this.currentQuantyPost))
     return Math.ceil(this.showQuantityPostsOnServer / this.currentQuantyPost)
   }
 },
@@ -95,26 +90,25 @@ computed : {
 .wrap {
   max-width: 1200px;
 }
-.container-blog {
-/* height: 100vh; */
-margin-bottom: -20px;
-}
 .post {
-  margin: 10px 10px;
-  border: 1px solid #000;
-  width: 800px;
+  background: #5c8eebe7;
+  color:#ffffff;
+  animation-duration: 0.5s;
+  animation-name: post;
+  animation-iteration-count: 1;
+  animation-direction: reverse;
+  animation-fill-mode: forwards;
 }
-/* .post-body {
-  max-height:76px;
-} */
-/* .loading {
-width: 100vw;
-height: 100vh;
-background: #ffffff;
-display: flex;
-justify-content: center;
-align-items: center;
-} */
+@keyframes post {
+  from {
+    margin: 10px 10px;
+  width: 80%;
+  }
+  to {
+    margin-top: 100%;
+  width: 100%;
+  }
+}
 .paginationBlock {
   width: 300px;
 }

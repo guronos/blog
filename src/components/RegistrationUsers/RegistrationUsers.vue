@@ -1,8 +1,8 @@
 <template>
   <div>
     <LoadingPage v-if="loadingData" />
-    <v-container v-if="!authorization">
-    <v-container class="green my-16">Регистрация</v-container> 
+    <v-card color="#B0C4DE" v-if="!authorization" class="entry-form" @click="$emit('thisForm', 'register')" :class="{ 'no-transform': form==='register'}">
+    <v-container class="card-head white--text">Регистрация</v-container> 
     <v-container>Для предоставления более расширенного функционала блога (комментирование записей), Вам необходимо зарегистрироватся</v-container>
     <v-container><v-form
       ref="form"
@@ -38,7 +38,7 @@
       <v-checkbox
         v-model="checkbox"
         :rules="[v => !!v || 'You must agree to continue!']"
-        label="Do you agree?"
+        label="Я согласен"
         required
       ></v-checkbox>
       <v-btn
@@ -50,16 +50,14 @@
       </v-btn>
       <v-btn
         :disabled="!valid"
-        color="success"
-        class="mr-4"
+        color="#5c8eebe7"
+        class="mr-4 white--text"
         @click="submit"
       >
         Отправить
       </v-btn>
-  
-
     </v-form></v-container>
-  </v-container>
+  </v-card>
   <v-container v-else><h3>Вы авторизованы</h3></v-container>
   </div>
 </template>
@@ -67,9 +65,13 @@
 <script>
 import LoadingPage from '../LoadingPage';
 import { mapMutations } from 'vuex';
+import router from '@/router'
 export default {
 name : 'RegistrationUsers',
 components: {LoadingPage},
+props : {
+form : String
+},
 data: () => ({
     valid: true,
     name: '',
@@ -97,7 +99,7 @@ data: () => ({
     this.checkAuthorization()
    },
   methods: {
-    ...mapMutations(['getUserlogin']),
+    ...mapMutations(['addUserlogin']),
     async checkAuthorization() {
       if (!localStorage.getItem('token')){
         this.loadingData = false
@@ -117,30 +119,14 @@ data: () => ({
     },
     async submit () {
       if(this.$refs.form.validate()) {
-      //   console.log(JSON.stringify({
-      //   username : this.name,
-      //   email : this.email,
-      //   locale : 'en_US',
-      //   password : this.password
-      // }))
       const getTokenRegistration = await fetch('http://chub96u7.beget.tech/api/get_nonce/?controller=user&method=register')
       const tokenRegistration = await getTokenRegistration.json()
-      console.log(tokenRegistration.nonce)
 const rezult = await fetch(`http://chub96u7.beget.tech/api/user/register/?username=${this.name}&email=${this.email}&nonce=${tokenRegistration.nonce}&display_name=${this.name}&user_pass=${this.password}&insecure=cool`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
       },
-      // body: JSON.stringify({
-      //   username : this.name,
-      //   email : this.email,
-      //   user_pass : this.password,
-      //   display_name : this.name,
-      //   insecure : 'cool',
-      //   nonce : tokenRegistration.nonce
-      // })
     })
-    console.log(rezult.ok)
       if (rezult.ok){
         this.saveTokenLocalstore()
       }} 
@@ -161,13 +147,53 @@ const rezult = await fetch(`http://chub96u7.beget.tech/api/user/register/?userna
     })
     const userToken = await getUserToken.json()
     localStorage.setItem('token', userToken.token)
-    this.getUserlogin(this.name)
+    this.addUserlogin(this.name)
     this.authorization = true
+    router.push({path: '/blog'})
     }
   },
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.entry-form {
+  position: fixed;
+    top: 0;
+    left: 40%;
+  width: 600px;
+  margin-top: 6%;
+   opacity: 0.4;
+  @media (max-width:720px) {
+    width:400px;
+position: relative;
+left: 0;
+margin-bottom: 3%;
+  }
+}
+.no-transform {
+z-index: 1;
+  opacity : 1;
+  animation-duration: 0.2s;
+  animation-name: reg;
+  animation-iteration-count: 1;
+  animation-direction: alternate;
+  animation-fill-mode: forwards;
+  @media (max-width:720px) {
+    animation-name: off;
+  }
+  @keyframes reg {
+    from {
+      left:40%
+    }
+    50% {
+      left:50%
+    }
+    to {
+      left:35%
+    }
+  }
+}
+.card-head {
+  background: #5c8eebe7;
+}
 </style>

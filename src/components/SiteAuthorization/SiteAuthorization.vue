@@ -1,9 +1,10 @@
 <template>
- <div>
+ <div class="d-flex justify-center align-center main">
   <LoadingPage v-if="loadingData" />
-  <v-container v-if="notAuthorization">
-    <v-container class="green my-16">Вход</v-container> 
-    <v-container>Для предоставления более расширенного функционала блога (комментирование записей), Вам необходимо войти</v-container>
+  <v-card color="#B0C4DE" v-if="notAuthorization" class="entry-form" @click="form='entry'"
+  :class="{ 'no-transform': form==='entry'}">
+    <v-container class="card-head white--text">Вход</v-container> 
+    <v-container>Для предоставления более расширенного функционала блога, Вам необходимо авторизоваться</v-container>
     <v-container><v-form
       ref="form"
       v-model="valid"
@@ -27,7 +28,6 @@
         counter
         @click:append="showPassword = !showPassword"
       ></v-text-field>
-
       <v-btn
         color="error"
         class="mr-4"
@@ -37,31 +37,32 @@
       </v-btn>
       <v-btn
         :disabled="!valid"
-        color="success"
-        class="mr-4"
+        color="#5c8eebe7"
+        class="mr-4 white--text"
         @click="submit"
       >
         Отправить
       </v-btn>
-  
-
     </v-form></v-container>
-  </v-container>
-  <v-container v-else><h3>Вы авторизованы</h3></v-container>
+  </v-card>
+  <RegistrationUsers :form="form" @thisForm="thisForm" v-if="notAuthorization" />
+  <v-card v-if="!notAuthorization" color="#B0C4DE" class="d-flex justify-center align-center authorization-card"><span class="authorization-true">Вы авторизованы</span></v-card>
   </div>
 </template>
-
 <script>
 import LoadingPage from '../LoadingPage'
+import RegistrationUsers from '../RegistrationUsers'
 import { mapMutations } from 'vuex'
+import router from '@/router'
 export default {
 name : 'SiteAuthorization',
-components : {LoadingPage},
+components : { LoadingPage, RegistrationUsers },
 data: () => ({
     valid: true,
     notAuthorization : true,
     loadingData : true,
     name: '',
+    form : 'entry',
     showPassword : false,
     nameRules: [
       v => !!v || 'Укажите логин',
@@ -78,7 +79,7 @@ data: () => ({
    },
 
   methods: {
-    ...mapMutations(['getUserlogin']),
+    ...mapMutations(['addUserlogin']),
     async checkAuthorization() {
       if (!localStorage.getItem('token')){
         this.loadingData = false
@@ -110,17 +111,74 @@ data: () => ({
     })
     const userToken = await getUserToken.json()
     localStorage.setItem('token', userToken.token)
-    this.getUserlogin(this.name)
+    this.addUserlogin(this.name)
     this.notAuthorization = false
     this.reset ()
-    console.log(userToken.token)
+    router.push({path: '/blog'})
       }},
     reset () {
       this.$refs.form.reset()
-    },
+    }, thisForm(event) {
+this.form = event
+    }
   }}
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.main {
+  @media (max-width:720px) {
+flex-direction: column;
+  }
+}
+.entry-form {
+  position: fixed;
+  top: 0;
+  width: 600px;
+margin-top: 10%;
+  margin-right: 10%;
+  opacity: 0.4;
+  
+  @media (max-width:720px) {
+    position: relative;
+    width: 400px;
+    margin-right: 0;
+    margin-top: 10%;
+  }
+}
+.no-transform {
+z-index: 1;
+  opacity : 1;
+  animation-duration: 0.2s;
+  animation-name: entry;
+  animation-iteration-count: 1;
+  animation-direction: alternate;
+  animation-fill-mode: forwards;
+  @media (max-width:720px) {
+    animation-name: off;
+  }
+  @keyframes entry {
+    from {
+      right:30%
+    }
+    50% {
+      right:40%
+    }
+    to {
+      right:25%
+    }
+  }
+}
+.card-head {
+  background: #5c8eebe7;
+}
+.authorization-card {
+margin-top: 10%;
+.authorization-true {
+color: #161515c4;
+font-size: 32px;
+font-weight: 600;
+padding: 3%;
+text-align: center;
+}
+}
 </style>

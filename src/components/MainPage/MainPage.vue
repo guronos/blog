@@ -17,14 +17,16 @@
           elevation="8"
           outlined
           class="card"
+          :href="item.link"
+          target="_blank"
           >
           <div 
           :class='item.color'
           >
-            <v-card-title class="text-slades">
+            <v-card-title>
               {{ item.title }} 
             </v-card-title>
-            <v-card-text>
+            <v-card-text class="text-slades">
               {{item.content}}
             </v-card-text></div>
           </v-card>
@@ -55,8 +57,8 @@ this.getPostsForMainPage()
 
 <style lang="scss" scoped>
 $maxWidth:60%;
-@mixin card-color($oneColorBlock:white, $twoColorBlock:gray, $colorText:black) {
-  background: linear-gradient(to bottom left, $oneColorBlock, $twoColorBlock);
+@mixin card-color($oneColorBlock:white, $twoColorBlock:gray, $colorText:rgb(255, 255, 255)) {
+background: linear-gradient(to bottom left, $oneColorBlock, $twoColorBlock);
 color: $colorText;
 margin: -1px;
 }
@@ -65,18 +67,21 @@ margin: -1px;
   @include card-color(#206123, #039b51)
 }
 .blue-card {
-  @include card-color(#1a0c6d, #0a597e, rgb(226, 224, 224))
+  @include card-color(#1a0c6d, #0a597e)
 }
 .purple-card {
-  @include card-color(#550874da, #940a94e0, rgb(15, 15, 15))
+  @include card-color(#550874da, #940a94e0)
 }
 .red-card {
-  @include card-color(#741a03de, #ce1d1d, rgb(255, 253, 253))
+  @include card-color(#741a03de, #ce1d1d)
 }
 .black-card {
-  @include card-color(#242323de, #3a3232, rgb(255, 253, 253))
+  @include card-color(#242323de, #3a3232)
 }
 .card {
   max-width: $maxWidth;
+}
+.text-slades {
+font-size: 18px;
 }
 </style>
