@@ -107,7 +107,6 @@ export default {
     async checkAuthorization() {
       if (!localStorage.getItem("token")) {
         this.loadingData = false;
-        return;
       } else if (localStorage.getItem("token")) {
         const validationToken = await fetch(
           "http://chub96u7.beget.tech/wp-json/jwt-auth/v1/token/validate",
