@@ -48,7 +48,7 @@
             </v-btn>
           </div>
           <template v-slot:extension>
-            <v-tabs grow>
+            <v-tabs>
               <v-tab to="/">О блоге</v-tab>
               <v-tab to="blog">Мои посты</v-tab>
               <v-tab to="authorization" v-if="showUserlogin === 'Гость'"
@@ -131,15 +131,14 @@ export default {
 </script>
 <style>
 #app {
-  background-image: url("./assets/img/background.jpg");
-  background-size: cover;
+  background: #F0F8FF;
 }
 .menu {
   height: 113px;
 }
 @media (max-width:960px) {
   .menu {
-  height: 19.5vh;
+  height: 100px;
 }
 }
 </style>

@@ -12,7 +12,7 @@
         <v-card
           color="#B0C4DE"
           v-if="comment.parent === 0"
-          class="comment my-4 pb-2"
+          class="my-4 pb-2"
         >
           <div class="commentator mx-2">
             <div><v-img :src="comment.avatar" width="24px"></v-img></div>
@@ -58,7 +58,7 @@
                 <v-container>
                   <v-row>
                     <v-col cols="12">
-                      <v-card color="#F0F8FF" class="comment-answer pa-1">
+                      <v-card color="#F0F8FF" class="pa-1">
                         <v-text-field
                           v-model="message"
                           outlined
@@ -128,7 +128,7 @@
         <v-container>
           <v-row>
             <v-col cols="12">
-              <v-card color="#F0F8FF" class="comment-answer pa-1">
+              <v-card color="#F0F8FF" class="pa-1">
                 <v-text-field
                   v-model="message"
                   outlined
@@ -344,17 +344,9 @@ export default {
 </script>
 
 <style scoped>
-.comment {
-  color: #363a45;
-  background: #fdf6ee;
-}
 .commentator {
   display: flex;
   height: 30px;
   align-items: center;
-}
-.comment-answer {
-  color: #363a45;
-  background: #f8efe4f8;
 }
 </style>

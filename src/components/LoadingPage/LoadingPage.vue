@@ -17,7 +17,6 @@ export default {
 .loading {
   width: 100vw;
   height: 100vh;
-  background-image: url("../../assets/img/background.jpg");
-  background-size: cover;
+background:#F0F8FF;;
 }
 </style>
