@@ -5,12 +5,12 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    URLBACKEND: "http://chub96u7.beget.tech/",
+    URLBACKEND: "https://audiocut.ru/",
     PERMALINKS: "wp-json",
     APIBLOGPOSTS:
-      "/wp/v2/posts?categories=5&_fields=id,title,date,content.rendered,excerpt.rendered,_links.wp:featuredmedia.0,_links.replies&_embed=replies, wp:featuredmedia",
+      "/wp/v2/posts?categories=2&_fields=id,title,date,content.rendered,excerpt.rendered,_links.wp:featuredmedia.0,_links.replies&_embed=replies, wp:featuredmedia",
     APIMAINPAGEPOSTS:
-      "/wp/v2/posts?categories=4&_fields=title,content.rendered,acf.color,acf.link,_links.wp:featuredmedia.0&_embed=wp:featuredmedia", // фильтр запрашиваемых значений (заголовок, дата, контент,категория, теги, изображения) categories=4 --для главной
+      "/wp/v2/posts?categories=3&_fields=title,content.rendered,acf.color,acf.link,_links.wp:featuredmedia.0&_embed=wp:featuredmedia", // фильтр запрашиваемых значений (заголовок, дата, контент,категория, теги, изображения) categories=4 --для главной
     posts: [],
     pages: [],
     loading: true,
@@ -126,7 +126,7 @@ export default new Vuex.Store({
     async getUserName({ commit }) {
       if (localStorage.getItem("token")) {
         const checkUserName = await fetch(
-          "http://chub96u7.beget.tech/wp-json/wp/v2/users/me",
+          "https://audiocut.ru/wp-json/wp/v2/users/me",
           {
             method: "GET",
             headers: {

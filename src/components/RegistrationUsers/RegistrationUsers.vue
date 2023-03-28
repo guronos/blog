@@ -112,7 +112,7 @@ export default {
         this.loadingData = false;
       } else if (localStorage.getItem("token")) {
         const validationToken = await fetch(
-          "http://chub96u7.beget.tech/wp-json/jwt-auth/v1/token/validate",
+          "https://audiocut.ru/wp-json/jwt-auth/v1/token/validate",
           {
             method: "POST",
             headers: {
@@ -129,11 +129,11 @@ export default {
     async submit() {
       if (this.$refs.form.validate()) {
         const getTokenRegistration = await fetch(
-          "http://chub96u7.beget.tech/api/get_nonce/?controller=user&method=register"
+          "https://audiocut.ru/api/get_nonce/?controller=user&method=register"
         );
         const tokenRegistration = await getTokenRegistration.json();
         const rezult = await fetch(
-          `http://chub96u7.beget.tech/api/user/register/?username=${this.name}&email=${this.email}&nonce=${tokenRegistration.nonce}&display_name=${this.name}&user_pass=${this.password}&insecure=cool`,
+          `https://audiocut.ru/api/user/register/?username=${this.name}&email=${this.email}&nonce=${tokenRegistration.nonce}&display_name=${this.name}&user_pass=${this.password}&insecure=cool`,
           {
             method: "POST",
             headers: {
@@ -151,7 +151,7 @@ export default {
     },
     async saveTokenLocalstore() {
       const getUserToken = await fetch(
-        "http://chub96u7.beget.tech/wp-json/jwt-auth/v1/token",
+        "https://audiocut.ru/wp-json/jwt-auth/v1/token",
         {
           method: "POST",
           headers: {

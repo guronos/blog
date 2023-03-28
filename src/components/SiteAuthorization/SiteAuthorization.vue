@@ -97,7 +97,7 @@ export default {
         this.loadingData = false;
       } else if (localStorage.getItem("token")) {
         const validationToken = await fetch(
-          "http://chub96u7.beget.tech/wp-json/jwt-auth/v1/token/validate",
+          "https://audiocut.ru/wp-json/jwt-auth/v1/token/validate",
           {
             method: "POST",
             headers: {
@@ -114,7 +114,7 @@ export default {
     async submit() {
       if (this.$refs.form.validate()) {
         const getUserToken = await fetch(
-          "http://chub96u7.beget.tech/wp-json/jwt-auth/v1/token",
+          "https://audiocut.ru/wp-json/jwt-auth/v1/token",
           {
             method: "POST",
             headers: {

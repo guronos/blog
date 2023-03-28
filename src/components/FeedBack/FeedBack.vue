@@ -79,7 +79,7 @@ export default {
           dataFeedback.append(field, this.emailBody[field]);
         }
         const postFeedback = await fetch(
-          "http://chub96u7.beget.tech/wp-json/contact-form-7/v1/contact-forms/15/feedback",
+          "https://audiocut.ru/wp-json/contact-form-7/v1/contact-forms/5/feedback",
           {
             method: "POST",
             body: dataFeedback,

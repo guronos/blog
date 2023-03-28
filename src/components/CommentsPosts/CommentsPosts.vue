@@ -252,7 +252,7 @@ export default {
         this.notAuthorization = true;
       } else {
         const validationToken = await fetch(
-          "http://chub96u7.beget.tech/wp-json/jwt-auth/v1/token/validate",
+          "https://audiocut.ru/wp-json/jwt-auth/v1/token/validate",
           {
             method: "POST",
             headers: {
@@ -262,7 +262,7 @@ export default {
         );
         if (validationToken.statusText === "OK") {
           const getUserData = await fetch(
-            "http://chub96u7.beget.tech/wp-json/wp/v2/users/me?_fields=id,name",
+            "https://audiocut.ru/wp-json/wp/v2/users/me?_fields=id,name",
             {
               method: "POST",
               headers: {
@@ -272,7 +272,7 @@ export default {
           );
           const userData = getUserData.json();
           const createComment = await fetch(
-            "http://chub96u7.beget.tech/wp-json/wp/v2/comments",
+            "https://audiocut.ru/wp-json/wp/v2/comments",
             {
               method: "POST",
               headers: {
@@ -318,7 +318,7 @@ export default {
       this.arrayComments = [];
       try {
         const getCommentsData = await fetch(
-          `http://chub96u7.beget.tech/wp-json/wp/v2/comments?post=${postID}&per_page=40`
+          `https://audiocut.ru/wp-json/wp/v2/comments?post=${postID}&per_page=40`
         );
         const commentData = await getCommentsData.json();
 
