@@ -182,9 +182,9 @@ export default {
   margin-top: 6%;
   opacity: 0.4;
   @media (max-width: 720px) {
-    width: 400px;
+    width: 90%;
     position: relative;
-    left: 0;
+    left: 5%;
     margin-bottom: 3%;
   }
 }

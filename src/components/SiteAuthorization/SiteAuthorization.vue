@@ -160,7 +160,7 @@ export default {
 
   @media (max-width: 720px) {
     position: relative;
-    width: 400px;
+    width: 90%;
     margin-right: 0;
     margin-top: 10%;
   }

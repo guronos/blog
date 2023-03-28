@@ -7,7 +7,7 @@
     >
       <ul>
         <li class="text-h6">Кто мы</li>
-        Наш адрес сайта: http://audiocut.ru/
+        Наш адрес сайта: http://myblogproject.ru/
 
         <li class="text-h6">Комментарии</li>
         Если посетитель оставляет комментарий на сайте, мы собираем данные
@@ -96,5 +96,8 @@ export default {
 <style scoped>
 .main {
   margin: 3% 0;
+}
+ul {
+  width: 100%;
 }
 </style>

@@ -5,7 +5,7 @@
       hide-delimiters
       height="90vh"
       cycle
-      interval="10000"
+      interval="12000"
       show-arrows-on-hover
     >
       <v-carousel-item
@@ -14,7 +14,7 @@
         :src="item.img"
         class="cyan lighten-4"
       >
-        <v-row class="fill-height" align="center" justify="center">
+        <v-row class="fill-height mt-10 pb-10 mt-lg-0 mt-xl-0 overflow-auto" align="center" justify="center">
           <v-card
             elevation="8"
             outlined

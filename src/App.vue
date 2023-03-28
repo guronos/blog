@@ -21,7 +21,7 @@
             @click.stop="drawer = !drawer"
           ></v-app-bar-nav-icon>
 
-          <v-toolbar-title
+          <v-toolbar-title class="d-none d-sm-inline"
             >{{ showUserlogin }}, добро пожаловать в Мой блог</v-toolbar-title
           >
 
@@ -48,8 +48,8 @@
             </v-btn>
           </div>
           <template v-slot:extension>
-            <v-tabs align-with-title>
-              <v-tab to="/">Обо мне</v-tab>
+            <v-tabs grow>
+              <v-tab to="/">О блоге</v-tab>
               <v-tab to="blog">Мои посты</v-tab>
               <v-tab to="authorization" v-if="showUserlogin === 'Гость'"
                 >Вход</v-tab
@@ -57,8 +57,8 @@
             </v-tabs>
           </template>
         </v-app-bar>
-        <v-sheet id="scrolling-techniques-4" height="10vh">
-          <v-sheet height="11.5vh" style="position: relative">
+        <v-sheet id="scrolling-techniques-4">
+          <v-sheet style="position: relative" class="menu">
             <v-container class="fill-height">
               <v-row align="center" justify="center"> </v-row>
             </v-container>
@@ -133,5 +133,13 @@ export default {
 #app {
   background-image: url("./assets/img/background.jpg");
   background-size: cover;
+}
+.menu {
+  height: 113px;
+}
+@media (max-width:960px) {
+  .menu {
+  height: 19.5vh;
+}
 }
 </style>

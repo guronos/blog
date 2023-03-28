@@ -104,7 +104,7 @@ export default {
 .feedback-card {
   width: 800px;
   @media (max-width: 720px) {
-    width: 400px;
+    width: 90%;
   }
 }
 .title-card {
