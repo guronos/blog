@@ -5,7 +5,7 @@
     </div>
     <div v-if="excerpt.length">
       <div v-if="!fullContent">
-        {{ excerpt
+        {{ excerpt + '... '
         }}<span
           @click="fullContent = true"
           class="post-link text-decoration-underline"

@@ -62,41 +62,23 @@ export default new Vuex.Store({
       const processedResponse = await rawResponse.json();
       const arrayOfRequiredData = [];
       for (const elem in processedResponse) {
+        const datePublication = new Date(Date.parse(processedResponse[elem].date))
         arrayOfRequiredData.push({
           id: processedResponse[elem].id,
           title: processedResponse[elem].title.rendered,
-          excerpt: getexcerpt(elem),
+          excerpt: getExcerpt(elem),
           content: processedResponse[elem].content.rendered,
-          date: processedResponse[elem].date
-            .match(/(\S+)T(\S+)/)[1]
-            .split("-")
-            .reverse()
-            .join("."), // дата приходит в формате "2023-03-13T17:49:31", разбиваем строку на дату и время, "переворачиваем" дату к формату ДД.ММ.ГГГГ
-          time: processedResponse[elem].date.match(/(\S+)T(\S+)/)[2], // дата приходит в формате "2023-03-13T17:49:31", разбиваем строку на дату и время
-          img: await getImage(elem),
-          comments: await getComments(elem),
+          date: `${datePublication.getDate()} ${new Intl.DateTimeFormat("ru-RU", {month: "long",}).format(datePublication)} ${datePublication.getFullYear()}`,
+          time: `${datePublication.getHours()}:${datePublication.getMinutes()}`,
+          img: processedResponse[elem]._embedded?.["wp:featuredmedia"] ? processedResponse[elem]._embedded["wp:featuredmedia"][0].source_url : '',
+          comments: processedResponse[elem]._embedded?.replies ? processedResponse[elem]._embedded.replies[0].length : 0,
         });
       }
-      function getexcerpt(indexPost) {
+      function getExcerpt(indexPost) {
         try {
           return processedResponse[indexPost].excerpt.rendered.match(
             /(.+)(\[&hellip;])/
           )[1];
-        } catch (e) {
-          return "";
-        }
-      }
-      async function getComments(indexPost) {
-        try {
-          return processedResponse[indexPost]._embedded.replies[0].length;
-        } catch (e) {
-          return 0;
-        }
-      }
-      async function getImage(indexPost) {
-        try {
-          return processedResponse[indexPost]._embedded["wp:featuredmedia"][0]
-            .source_url;
         } catch (e) {
           return "";
         }

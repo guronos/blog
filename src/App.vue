@@ -6,7 +6,7 @@
           absolute
           color="#6A76AB"
           dark
-          src="https://picsum.photos/1920/1080?random"
+          src="https://picsum.photos/1920/180?random"
           fade-img-on-scroll
           scroll-target="#scrolling-techniques-4"
         >
@@ -27,13 +27,13 @@
 
           <v-spacer></v-spacer>
           <div>
-            <a href="https://github.com/guronos/" target="_blank" class="mx-2"
+            <a href="https://github.com/guronos/" title="Профиль на GitHub" target="_blank" class="mx-2"
               ><i
                 class="fa-brands fa-github fa-fade fa-2xl"
                 style="color: #fcfcfc"
               ></i
             ></a>
-            <a href="https://t.me/ichschlafe" target="_blank" class="mx-2"
+            <a href="https://t.me/ichschlafe" title="Ссылка на Telegram" target="_blank" class="mx-2"
               ><i
                 class="fa-regular fa-paper-plane fa-beat-fade fa-xl"
                 style="color: #fcfcfc"
