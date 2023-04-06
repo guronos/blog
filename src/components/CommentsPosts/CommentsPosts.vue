@@ -182,6 +182,7 @@
 </template>
 
 <script>
+import { checkToken } from "../../assets/scripts/index.js"
 export default {
   name: "CommentsPosts",
   props: {
@@ -251,15 +252,7 @@ export default {
       if (!localStorage.getItem("token")) {
         this.notAuthorization = true;
       } else {
-        const validationToken = await fetch(
-          "http://chub96u7.beget.tech/wp-json/jwt-auth/v1/token/validate",
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const validationToken = await checkToken();
         if (validationToken.statusText === "OK") {
           const getUserData = await fetch(
             "http://chub96u7.beget.tech/wp-json/wp/v2/users/me?_fields=id,name",
@@ -291,16 +284,13 @@ export default {
           this.message = "";
           const responseCreateComment = await createComment.json();
           if (responseCreateComment.status === "approved") {
+            const datePublication = new Date(Date.parse(responseCreateComment.date))
             this.newComment = {
               avatar: responseCreateComment.author_avatar_urls[24],
               author_name: responseCreateComment.author_name,
               content: responseCreateComment.content.rendered,
-              date: responseCreateComment.date
-                .match(/(\S+)T(\S+)/)[1]
-                .split("-")
-                .reverse()
-                .join("."),
-              time: responseCreateComment.date.match(/(\S+)T(\S+)/)[2],
+              date: `${datePublication.getDate()} ${new Intl.DateTimeFormat("ru-RU", {month: "long",}).format(datePublication)} ${datePublication.getFullYear()}`,
+              time: `${datePublication.getHours()}:${datePublication.getMinutes()}`,
               parent: responseCreateComment.parent,
               post: responseCreateComment.post,
             };
@@ -322,21 +312,18 @@ export default {
         );
         const commentData = await getCommentsData.json();
 
-        commentData.reverse().forEach((i) =>
+        commentData.reverse().forEach((i) =>{
+        const datePublication = new Date(Date.parse(i.date));
           this.arrayComments.push({
             id: i.id,
             parent: i.parent,
             author_name: i.author_name,
             content: i.content.rendered,
-            date: i.date
-              .match(/(\S+)T(\S+)/)[1]
-              .split("-")
-              .reverse()
-              .join("."), // дата приходит в формате "2023-03-13T17:49:31", разбиваем строку на дату и время, "переворачиваем" дату к формату ДД.ММ.ГГГГ
-            time: i.date.match(/(\S+)T(\S+)/)[2], // дата приходит в формате "2023-03-13T17:49:31", разбиваем строку на дату и время
+            date: `${datePublication.getDate()} ${new Intl.DateTimeFormat("ru-RU", {month: "long",}).format(datePublication)} ${datePublication.getFullYear()}`,
+            time: `${datePublication.getHours()}:${datePublication.getMinutes()}`,
             avatar: i.author_avatar_urls["24"],
           })
-        );
+      });
       } catch (e) {}
     },
   },

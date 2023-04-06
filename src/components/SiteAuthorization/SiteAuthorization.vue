@@ -65,6 +65,7 @@ import LoadingPage from "../LoadingPage";
 import RegistrationUsers from "../RegistrationUsers";
 import { mapMutations } from "vuex";
 import router from "@/router";
+import {checkToken, getToken} from "../../assets/scripts/index.js";
 export default {
   name: "SiteAuthorization",
   components: { LoadingPage, RegistrationUsers },
@@ -96,15 +97,7 @@ export default {
       if (!localStorage.getItem("token")) {
         this.loadingData = false;
       } else if (localStorage.getItem("token")) {
-        const validationToken = await fetch(
-          "http://chub96u7.beget.tech/wp-json/jwt-auth/v1/token/validate",
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const validationToken = await checkToken();
         if (validationToken.statusText === "OK") {
           this.notAuthorization = false;
           this.loadingData = false;
@@ -113,19 +106,7 @@ export default {
     },
     async submit() {
       if (this.$refs.form.validate()) {
-        const getUserToken = await fetch(
-          "http://chub96u7.beget.tech/wp-json/jwt-auth/v1/token",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json;charset=utf-8",
-            },
-            body: JSON.stringify({
-              username: this.name,
-              password: this.password,
-            }),
-          }
-        );
+        const getUserToken = await getToken(this.name, this.password);
         const userToken = await getUserToken.json();
         localStorage.setItem("token", userToken.token);
         this.addUserlogin(this.name);

@@ -72,6 +72,7 @@
 import LoadingPage from "../LoadingPage";
 import { mapMutations } from "vuex";
 import router from "@/router";
+import { checkToken } from "../../assets/scripts/index.js"
 export default {
   name: "RegistrationUsers",
   components: { LoadingPage },
@@ -111,15 +112,7 @@ export default {
       if (!localStorage.getItem("token")) {
         this.loadingData = false;
       } else if (localStorage.getItem("token")) {
-        const validationToken = await fetch(
-          "http://chub96u7.beget.tech/wp-json/jwt-auth/v1/token/validate",
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const validationToken = await checkToken();
         if (validationToken.statusText === "OK") {
           this.authorization = true;
           this.loadingData = false;
