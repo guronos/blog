@@ -66,7 +66,7 @@ export default {
     return {
       quantityShowPost: [1, 2, 5, 10],
       currentPage: 1,
-      currentQuantyPost: 2,
+      currentQuantyPost: 5,
     };
   },
   created() {

@@ -69,7 +69,7 @@ export default new Vuex.Store({
           excerpt: getExcerpt(elem),
           content: processedResponse[elem].content.rendered,
           date: `${datePublication.getDate()} ${new Intl.DateTimeFormat("ru-RU", {month: "long",}).format(datePublication)} ${datePublication.getFullYear()}`,
-          time: `${datePublication.getHours()}:${datePublication.getMinutes()}`,
+          time: `${datePublication.getHours()}:${String(datePublication.getMinutes()).length === 1 ? String(0) + datePublication.getMinutes() : datePublication.getMinutes()}`,
           img: processedResponse[elem]._embedded?.["wp:featuredmedia"] ? processedResponse[elem]._embedded["wp:featuredmedia"][0].source_url : '',
           comments: processedResponse[elem]._embedded?.replies ? processedResponse[elem]._embedded.replies[0].length : 0,
         });

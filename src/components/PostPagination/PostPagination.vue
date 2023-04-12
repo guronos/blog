@@ -5,7 +5,7 @@
     @input="$emit('handleShowQuantityPosts', $event)"
     label="Постов на странице"
     outlined
-    background-color="#FDF6EE"
+    background-color="#c1d9ee"
     hide-selected
   ></v-select>
 </template>

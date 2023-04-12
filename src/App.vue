@@ -81,7 +81,7 @@
                   v-for="item in items"
                   :key="item.title"
                   link
-                  to="/feedback"
+                  to="feedback"
                 >
                   <v-list-item-icon>
                     <v-icon>{{ item.icon }}</v-icon>
@@ -130,8 +130,12 @@ export default {
 };
 </script>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;500;600;700&display=swap');
+
 #app {
-  background: #F0F8FF;
+  background: #c1d9ee;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 600;
 }
 .menu {
   height: 113px;

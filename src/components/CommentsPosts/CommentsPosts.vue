@@ -58,7 +58,7 @@
                 <v-container>
                   <v-row>
                     <v-col cols="12">
-                      <v-card color="#F0F8FF" class="pa-1">
+                      <v-card color="#c1d9ee" class="pa-1">
                         <v-text-field
                           v-model="message"
                           outlined
@@ -128,7 +128,7 @@
         <v-container>
           <v-row>
             <v-col cols="12">
-              <v-card color="#F0F8FF" class="pa-1">
+              <v-card color="#c1d9ee" class="pa-1">
                 <v-text-field
                   v-model="message"
                   outlined

@@ -17,6 +17,6 @@ export default {
 .loading {
   width: 100vw;
   height: 100vh;
-background:#F0F8FF;;
+  background: #c1d9ee;
 }
 </style>
