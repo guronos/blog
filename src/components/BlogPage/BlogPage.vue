@@ -23,7 +23,6 @@
             @handleShowQuantityPosts="handleShowQuantityPosts"
           />
         </div>
-
         <div
           class="post rounded-lg pa-4 elevation-10"
           v-for="post in showPosts"
