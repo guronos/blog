@@ -6,7 +6,6 @@
           absolute
           color="#6A76AB"
           dark
-          src="https://picsum.photos/1920/180?random"
           fade-img-on-scroll
           scroll-target="#scrolling-techniques-4"
         >

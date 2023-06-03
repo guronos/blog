@@ -7,7 +7,9 @@ export const checkToken = ()=> fetch(
       },
     }
   );
-export const getToken = (user, pass) => fetch(
+export const getToken = async (user, pass) => 
+{
+const data = await fetch(
     "http://chub96u7.beget.tech/wp-json/jwt-auth/v1/token",
     {
       method: "POST",
@@ -19,4 +21,6 @@ export const getToken = (user, pass) => fetch(
         password: pass,
       }),
     }
-  );
+  ).catch()
+    return data
+};

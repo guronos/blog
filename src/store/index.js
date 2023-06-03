@@ -1,6 +1,5 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import router from "@/router";
 
 Vue.use(Vuex);
 
@@ -121,7 +120,6 @@ export default new Vuex.Store({
         commit("addUserlogin", userName.name);
       } else {
         localStorage.clear()
-        router.push({ path: "/authorization" });
       }
     },
   },

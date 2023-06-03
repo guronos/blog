@@ -103,13 +103,13 @@ export default {
         if (validationToken.statusText === "OK") {
           this.notAuthorization = false;
           this.loadingData = false;
-        }
+        } 
       }
     },
     async submit() {
       if (this.$refs.form.validate()) {
         const getUserToken = await getToken(this.name, this.password);
-        if (getUserToken.status === 200) {
+        if (getUserToken?.status === 200) {
           this.errorToken = false
         const userToken = await getUserToken.json();
         localStorage.setItem("token", userToken.token);
