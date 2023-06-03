@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import router from "@/router";
 
 Vue.use(Vuex);
 
@@ -106,7 +107,7 @@ export default new Vuex.Store({
       ctx.commit("addPages", arrayOfRequiredData.reverse()); // новые странницы должны добавлятся в конец списка
     },
     async getUserName({ commit }) {
-      if (localStorage.getItem("token")) {
+      if (localStorage.getItem("token") && localStorage.getItem("token")!=='undefined') {
         const checkUserName = await fetch(
           "http://chub96u7.beget.tech/wp-json/wp/v2/users/me",
           {
@@ -118,6 +119,9 @@ export default new Vuex.Store({
         );
         const userName = await checkUserName.json();
         commit("addUserlogin", userName.name);
+      } else {
+        localStorage.clear()
+        router.push({ path: "/authorization" });
       }
     },
   },

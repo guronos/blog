@@ -9,6 +9,7 @@
       :class="{ 'no-transform': form === 'entry' }"
     >
       <v-container class="card-head white--text">Вход</v-container>
+      <v-container class="red white--text my-2 text-center" v-if="errorToken">Вы ввели неверный логин или пароль!</v-container>
       <v-container
         >Для предоставления более расширенного функционала блога, Вам необходимо
         авторизоваться</v-container
@@ -74,6 +75,7 @@ export default {
     notAuthorization: true,
     loadingData: true,
     name: "",
+    errorToken: false,
     form: "entry",
     showPassword: false,
     nameRules: [
@@ -94,9 +96,9 @@ export default {
   methods: {
     ...mapMutations(["addUserlogin"]),
     async checkAuthorization() {
-      if (!localStorage.getItem("token")) {
+      if (!localStorage.getItem("token") || localStorage.getItem("token")==='undefined') {
         this.loadingData = false;
-      } else if (localStorage.getItem("token")) {
+      } else {
         const validationToken = await checkToken();
         if (validationToken.statusText === "OK") {
           this.notAuthorization = false;
@@ -107,12 +109,17 @@ export default {
     async submit() {
       if (this.$refs.form.validate()) {
         const getUserToken = await getToken(this.name, this.password);
+        if (getUserToken.status === 200) {
+          this.errorToken = false
         const userToken = await getUserToken.json();
         localStorage.setItem("token", userToken.token);
         this.addUserlogin(this.name);
         this.notAuthorization = false;
         this.reset();
         router.push({ path: "/blog" });
+        } else {
+          this.errorToken = true
+        }
       }
     },
     reset() {
