@@ -1,4 +1,4 @@
-export const checkToken = ()=> fetch(
+export const checkToken = async()=> fetch(
     "http://chub96u7.beget.tech/wp-json/jwt-auth/v1/token/validate",
     {
       method: "POST",
